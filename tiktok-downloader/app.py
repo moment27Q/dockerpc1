@@ -15,7 +15,7 @@ def index():
         url = request.form.get("url")
 
         opciones = {
-            'outtmpl': f'{DOWNLOAD_FOLDER}/video.%(ext)s',  # nombre fijo (evita errores)
+            'outtmpl': f'{DOWNLOAD_FOLDER}/video.%(ext)s', 
             'format': 'best',
             'noplaylist': True
         }

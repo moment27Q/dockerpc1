@@ -1,0 +1,27 @@
+FROM python:3.11-alpine AS builder
+
+WORKDIR /app
+
+COPY requirements.txt .
+RUN pip install --no-cache-dir --prefix=/install -r requirements.txt
+
+FROM python:3.11-alpine
+
+WORKDIR /app
+
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+
+# Solo runtime deps en la imagen final
+RUN apk add --no-cache ffmpeg
+
+COPY --from=builder /install /usr/local
+
+COPY app.py .
+COPY templates ./templates
+
+RUN mkdir -p videos
+
+EXPOSE 5000
+
+CMD ["python", "app.py"]
